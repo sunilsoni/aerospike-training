@@ -9,9 +9,9 @@ import com.aerospike.client.policy.Policy;
 import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
-import com.training.aerospike.entity.BinName;
+import com.training.aerospike.core.BinName;
+import com.training.aerospike.core.Utils;
 import com.training.aerospike.repo.Connection;
-import com.training.aerospike.repo.Utils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.beans.PropertyDescriptor;

@@ -1,5 +1,6 @@
 package com.training.aerospike.entity;
 
+import com.training.aerospike.core.BinName;
 import lombok.Getter;
 import lombok.Setter;
 

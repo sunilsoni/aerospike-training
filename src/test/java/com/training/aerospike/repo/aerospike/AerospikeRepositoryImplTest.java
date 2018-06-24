@@ -1,11 +1,11 @@
 package com.training.aerospike.repo.aerospike;
 
 import com.aerospike.client.IAerospikeClient;
+import com.training.aerospike.core.Utils;
 import com.training.aerospike.entity.UserDetails;
 import com.training.aerospike.fixtures.FixtureBuilder;
 import com.training.aerospike.repo.Connection;
 import com.training.aerospike.repo.ConnectionInfo;
-import com.training.aerospike.repo.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.AfterClass;
 import org.junit.Assert;

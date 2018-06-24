@@ -1,4 +1,4 @@
-package com.training.aerospike.entity;
+package com.training.aerospike.core;
 
 public enum QueryParam {
     FUNCTION,

@@ -1,4 +1,4 @@
-package com.training.aerospike.entity;
+package com.training.aerospike.core;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

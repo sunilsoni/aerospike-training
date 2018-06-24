@@ -1,4 +1,4 @@
-package com.training.aerospike.repo;
+package com.training.aerospike.core;
 
 import com.google.common.base.CaseFormat;
 

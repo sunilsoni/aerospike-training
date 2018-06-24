@@ -7,9 +7,11 @@ import com.training.aerospike.repo.ConnectionInfo;
 
 
 public class RepoUtils {
-    private static final String hostName = System.getProperty("hostName", "127.0.0.1:3000");
-    private static final String userName = System.getProperty("userName", "");
-    private static final String password = System.getProperty("password", "");
+    //127.0.0.1:3000
+    //13.127.124.144:3000
+    private static final String hostName = System.getProperty("hostName", "13.127.124.144:3000");
+    private static final String userName = System.getProperty("userName", "aerotraining");
+    private static final String password = System.getProperty("password", "aerotraining");
     private static final String namespace = System.getProperty("namespace", "test");
     private static boolean isMock = Boolean.parseBoolean(System.getProperty("use.mock", "false"));
 
