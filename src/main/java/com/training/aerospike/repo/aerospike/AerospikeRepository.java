@@ -1,12 +1,12 @@
 package com.training.aerospike.repo.aerospike;
 
-import java.time.LocalDate;
-
 public interface AerospikeRepository<T> {
 
-    T fetchOrCreate(String id) throws AerospikeRepositoryException;
+    T fetchOrCreate(String id) throws AerospikeRepositorySystemException;
 
-    T fetch(String id) throws AerospikeRepositoryException;
+    T fetch(String id, Class<T> clazz) throws AerospikeRepositorySystemException;
 
-    void save(T entity);
+    //T fetchAll(Collection<String> ids, Class<T> clazz) throws AerospikeRepositorySystemException;
+
+    void save(T entity, String id);
 }

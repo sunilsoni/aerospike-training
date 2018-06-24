@@ -1,19 +1,17 @@
 package com.training.aerospike.repo.user;
 
-import com.training.aerospike.entity.Users;
-import com.training.aerospike.repo.aerospike.AerospikeRepository;
-import com.training.aerospike.repo.aerospike.AerospikeRepositoryException;
+import com.training.aerospike.entity.UserDetails;
 
-public interface UserRepository extends AerospikeRepository<Users> {
+import java.util.Optional;
 
-   // UserRepository init() throws AerospikeRepositoryException;
+public interface UserRepository {
 
-    void updateFirstName(String id,String firstName);
+    void updateUserDetails(UserDetails user);
 
-    void updateUser(Users user);
+    Optional<UserDetails> save(UserDetails entity);
 
-    void updateLastName(String id,String lastName);
+    Optional<UserDetails> findByUsername(String username);
 
-    void updateDob(String id,String dob);
+    Optional<UserDetails> findById(String id);
 
 }

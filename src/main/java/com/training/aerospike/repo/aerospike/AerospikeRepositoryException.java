@@ -1,6 +1,6 @@
 package com.training.aerospike.repo.aerospike;
 
-public class AerospikeRepositoryException extends Exception {
+public class AerospikeRepositoryException extends RuntimeException {
     public AerospikeRepositoryException() {
         super();
     }

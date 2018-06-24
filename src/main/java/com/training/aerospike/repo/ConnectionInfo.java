@@ -1,12 +1,15 @@
 package com.training.aerospike.repo;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 
 @Setter
 @Getter
+@Slf4j
 public class ConnectionInfo implements Serializable {
 
     public static final int DEFAULT_PORT = 3000;
@@ -21,6 +24,7 @@ public class ConnectionInfo implements Serializable {
 
     }
 
+    @Builder
     public ConnectionInfo(String hostWithPort, String username, String password, String namespace) {
         String[] hostArr = hostWithPort.split(",");
 
@@ -32,8 +36,9 @@ public class ConnectionInfo implements Serializable {
             if (host.contains(":")) {
                 String[] hostArr1 = host.split(":");
                 if (hostArr1.length == 2) {
+                    // log.info("host: {} , port : {}",hostArr1[0] ,hostArr1[1]);
                     hostnames[i] = hostArr1[0];
-                    ports[i] = Integer.parseInt(hostArr1[i]);
+                    ports[i] = Integer.parseInt(hostArr1[1]);
                 }
             } else {
                 hostnames[i] = host;

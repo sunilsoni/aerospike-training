@@ -8,11 +8,16 @@ import com.training.aerospike.repo.user.UserRepositoryImpl;
 
 public class RepositoryFactory {
 
-    private RepositoryFactory(){
+    private RepositoryFactory() {
 
     }
 
-    public static UserRepository createUserRepository(Connection<IAerospikeClient> connection){
+    public static UserRepository createUserRepository(Connection<IAerospikeClient> connection) {
         return new UserRepositoryImpl(connection);
+    }
+
+
+    public static AerospikeRepository createAerospikeRepository(Connection<IAerospikeClient> connection) {
+        return new AerospikeRepositoryImpl(connection);
     }
 }
