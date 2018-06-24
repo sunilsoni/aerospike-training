@@ -5,6 +5,7 @@ import com.training.aerospike.entity.UserDetails;
 import com.training.aerospike.fixtures.FixtureBuilder;
 import com.training.aerospike.repo.Connection;
 import com.training.aerospike.repo.ConnectionInfo;
+import com.training.aerospike.repo.Utils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class UserRepositoryImplTest {
             if (!isIsMock()) {
                 IAerospikeClient client = connection.openSession();
                 ConnectionInfo info = connection.getConnectionInfo();
-                //client.truncate(null,info.getNamespace(),repository.getSetName(UserDetails.class),null);
+                client.truncate(null, info.getNamespace(), Utils.getSetName(UserDetails.class), null);
             }
             connection.close();
         } catch (IOException e) {
