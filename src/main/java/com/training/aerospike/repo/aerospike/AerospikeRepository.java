@@ -8,8 +8,6 @@ public interface AerospikeRepository<T> {
 
     T fetch(Class<T> clazz, String id) throws AerospikeRepositorySystemException;
 
-    //T fetchAll(Collection<String> ids, Class<T> clazz) throws AerospikeRepositorySystemException;
-
     void save(T entity, String id);
 
     void deleteBins(T entity, String id);
