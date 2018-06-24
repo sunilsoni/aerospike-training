@@ -8,6 +8,8 @@ public interface UserRepository {
 
     void updateUserDetails(UserDetails user);
 
+    void delete(String id);
+
     Optional<UserDetails> save(UserDetails entity);
 
     Optional<UserDetails> findByUsername(String username);

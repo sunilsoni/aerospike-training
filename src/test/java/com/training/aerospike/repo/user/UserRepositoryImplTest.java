@@ -60,5 +60,21 @@ public class UserRepositoryImplTest {
 
     @Test
     public void findById() {
+        UserDetails expectedUserDetails = FixtureBuilder.buildUserDetails();
+        Optional<UserDetails> userDetails = repository.save(expectedUserDetails);
+        Assert.assertTrue(userDetails.isPresent());
+
+        Optional<UserDetails> actual = repository.findById(expectedUserDetails.getId());
+        Assert.assertTrue(actual.isPresent());
+        Assert.assertEquals(expectedUserDetails.getId(), actual.get().getId());
+
+        Assert.assertEquals(expectedUserDetails.getDob(), actual.get().getDob());
+        Assert.assertEquals(expectedUserDetails.getFirstName(), actual.get().getFirstName());
+        Assert.assertEquals(expectedUserDetails.getLastName(), actual.get().getLastName());
+        Assert.assertEquals(expectedUserDetails.getGender(), actual.get().getGender());
+        Assert.assertEquals(expectedUserDetails.getPassword(), actual.get().getPassword());
+        Assert.assertEquals(expectedUserDetails.getRegion(), actual.get().getRegion());
+        Assert.assertEquals(expectedUserDetails.getUsername(), actual.get().getUsername());
+        Assert.assertEquals(expectedUserDetails.getInterests(), actual.get().getInterests());
     }
 }

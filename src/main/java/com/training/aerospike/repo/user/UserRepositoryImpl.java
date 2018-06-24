@@ -5,6 +5,7 @@ import com.training.aerospike.entity.UserDetails;
 import com.training.aerospike.repo.Connection;
 import com.training.aerospike.repo.RepositoryFactory;
 import com.training.aerospike.repo.aerospike.AerospikeRepository;
+import com.training.aerospike.repo.aerospike.AerospikeRepositorySystemException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
@@ -25,6 +26,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void delete(String id) {
+        //  aerospikeRepository.d
+    }
+
+    @Override
     public Optional<UserDetails> save(UserDetails entity) {
         aerospikeRepository.save(entity, entity.getId());
         log.info(String.format("UserDetails with id %s saved!", entity.getId()));
@@ -39,7 +45,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<UserDetails> findById(String id) {
+        Optional<UserDetails> result;
+        try {
+            Object obj = aerospikeRepository.fetch(id, UserDetails.class);
+            result = Optional.of((UserDetails) obj);
+        } catch (AerospikeRepositorySystemException e) {
+            return Optional.empty();
+        }
         log.info(String.format("UserDetails.findById  with id %s ", id));
-        return Optional.empty();
+        return result;
     }
 }
