@@ -47,7 +47,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<UserDetails> findById(String id) {
         Optional<UserDetails> result;
         try {
-            Object obj = aerospikeRepository.fetch(id, UserDetails.class);
+            Object obj = aerospikeRepository.fetch(UserDetails.class, id);
             result = Optional.of((UserDetails) obj);
         } catch (AerospikeRepositorySystemException e) {
             return Optional.empty();

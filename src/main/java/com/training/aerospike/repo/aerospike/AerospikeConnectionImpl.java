@@ -3,7 +3,6 @@ package com.training.aerospike.repo.aerospike;
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.Host;
 import com.aerospike.client.IAerospikeClient;
-import com.aerospike.client.Key;
 import com.aerospike.client.cdt.MapPolicy;
 import com.aerospike.client.policy.BatchPolicy;
 import com.aerospike.client.policy.ClientPolicy;
@@ -13,7 +12,6 @@ import com.training.aerospike.repo.Connection;
 import com.training.aerospike.repo.ConnectionInfo;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.util.Set;
 
 public class AerospikeConnectionImpl extends Connection<IAerospikeClient> {
@@ -30,7 +28,7 @@ public class AerospikeConnectionImpl extends Connection<IAerospikeClient> {
 
         this.clientPolicy = new ClientPolicy();
         this.wPolicy = new WritePolicy();
-        clientPolicy.readPolicyDefault.consistencyLevel=ConsistencyLevel.CONSISTENCY_ALL;
+        clientPolicy.readPolicyDefault.consistencyLevel = ConsistencyLevel.CONSISTENCY_ALL;
 
         if (!StringUtils.isEmpty(info.getUsername())) {
             clientPolicy.user = info.getUsername();
@@ -42,7 +40,7 @@ public class AerospikeConnectionImpl extends Connection<IAerospikeClient> {
 
     public AerospikeConnectionImpl(ConnectionInfo info, IAerospikeClient client) {
         super(info);
-        this.client=client;
+        this.client = client;
     }
 
     private Host[] getHosts(ConnectionInfo info) {
@@ -63,7 +61,7 @@ public class AerospikeConnectionImpl extends Connection<IAerospikeClient> {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         client.close();
     }
 }

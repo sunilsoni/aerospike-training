@@ -5,22 +5,20 @@ import com.aerospike.client.IAerospikeClient;
 import com.aerospike.client.Key;
 import com.aerospike.client.Record;
 import com.aerospike.client.policy.GenerationPolicy;
+import com.aerospike.client.policy.Policy;
 import com.aerospike.client.policy.RecordExistsAction;
 import com.aerospike.client.policy.WritePolicy;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
-import com.google.common.base.CaseFormat;
 import com.training.aerospike.entity.BinName;
 import com.training.aerospike.repo.Connection;
+import com.training.aerospike.repo.Utils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -30,13 +28,6 @@ public class AerospikeRepositoryImpl implements AerospikeRepository {
 
     public AerospikeRepositoryImpl(Connection<IAerospikeClient> connection) {
         this.connection = connection;
-    }
-
-    public static String getSetName(Class clazz) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz");
-        }
-        return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, clazz.getSimpleName());
     }
 
     @Override
@@ -57,7 +48,7 @@ public class AerospikeRepositoryImpl implements AerospikeRepository {
 
         if (bins.size() > 0) {
             WritePolicy policy = new WritePolicy();
-            policy.sendKey = true;
+            //policy.sendKey = true;
             policy.generationPolicy = GenerationPolicy.EXPECT_GEN_EQUAL;
             policy.recordExistsAction = RecordExistsAction.UPDATE;
 
@@ -69,14 +60,55 @@ public class AerospikeRepositoryImpl implements AerospikeRepository {
     }
 
     @Override
-    public Object fetchOrCreate(String id) {
+    public void deleteBins(Object entity, String id) {
+        Key key = createKey(entity.getClass(), id);
+        List<Bin> deletedBins = new ArrayList<>();
+        List<Field> fields = getAllDeclaredFields(entity.getClass());
 
+        for (Field field : fields) {
+            Class fieldType = field.getType();
+            Object fieldValue = getFieldValue(entity, field.getName());
+            if (fieldValue == null) {
+                deletedBins.add(Bin.asNull(getColumnName(field)));
+            }
+        }
 
-        return null;
+        IAerospikeClient client = connection.openSession();
+        WritePolicy wPolicy = new WritePolicy();
+        client.put(wPolicy, key, deletedBins.toArray(new Bin[deletedBins.size()]));
+        log.info(String.format(" %s  Bins with id %s is deleted successfully!", deletedBins.size(), id));
     }
 
     @Override
-    public Object fetch(String id, Class clazz) {
+    public boolean exists(Class clazz, String id) {
+        IAerospikeClient client = connection.openSession();
+        return client.exists(new Policy(), createKey(clazz, id));
+    }
+
+    @Override
+    public void deleteByIds(String setName, Set ids) {
+        IAerospikeClient client = connection.openSession();
+        WritePolicy wPolicy = new WritePolicy();
+        try {
+            ids.stream()
+                    .map(id -> createKey(setName, String.valueOf(id)))
+                    .forEach(key -> client.delete(wPolicy, (Key) key));
+        } catch (AerospikeRepositoryException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Object updateOrCreate(Object entity, String id) {
+        Object obj = fetch(entity.getClass(), id);
+        if (obj == null) {
+            save(entity, id);
+        }
+        return entity;
+    }
+
+    @Override
+    public Object fetch(Class clazz, String id) {
         List<Object> list = fetchAll(Collections.singletonList(id), clazz);
         if (list.isEmpty()) {
             return null;
@@ -107,7 +139,11 @@ public class AerospikeRepositoryImpl implements AerospikeRepository {
     }
 
     private Key createKey(Class<?> type, String id) {
-        return new Key(connection.getConnectionInfo().getNamespace(), getSetName(type), id);
+        return createKey(Utils.getSetName(type), id);
+    }
+
+    private Key createKey(String setName, String id) {
+        return new Key(connection.getConnectionInfo().getNamespace(), setName, id);
     }
 
     private List<Field> getAllDeclaredFields(Class<?> clazz) {

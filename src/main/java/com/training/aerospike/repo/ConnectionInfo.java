@@ -20,7 +20,7 @@ public class ConnectionInfo implements Serializable {
     private String password;
     private String namespace;
 
-    private ConnectionInfo(){
+    private ConnectionInfo() {
 
     }
 
@@ -53,17 +53,17 @@ public class ConnectionInfo implements Serializable {
         validate();
     }
 
-    public void validate()  {
+    public void validate() {
 
-        if(hostnames==null || hostnames.length==0){
+        if (hostnames == null || hostnames.length == 0) {
             throw new IllegalArgumentException("hostnames can not be null !");
         }
 
-        if(ports==null || ports.length==0){
+        if (ports == null || ports.length == 0) {
             throw new IllegalArgumentException("ports can not be null !");
         }
 
-        if(namespace==null || namespace.isEmpty()){
+        if (namespace == null || namespace.isEmpty()) {
             throw new IllegalArgumentException("namespace can not be null !");
         }
     }
