@@ -22,9 +22,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUserDetails(UserDetails user) {
-        log.info(String.format("UserDetails with id %s updated!", user.getId()));
-
+    public void updateUserDetails(UserDetails entity) {
+        log.info(String.format("UserDetails with id %s updated!", entity.getId()));
+        aerospikeRepository.save(entity, entity.getId());
     }
 
     @Override

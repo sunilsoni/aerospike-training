@@ -65,7 +65,22 @@ public class UserRepositoryImplTest {
     }
 
     @Test
-    public void findByUsername() {
+    public void updateUserDetails() {
+        //save user entity
+        UserDetails userDetails = FixtureBuilder.buildUserDetails();
+        repository.save(userDetails);
+
+        //updated user details
+        userDetails.setUsername("updated_username");
+        repository.updateUserDetails(userDetails);
+
+        //check if updated or not
+        Optional<UserDetails> actualOpt = repository.findById(userDetails.getId());
+        Assert.assertTrue(actualOpt.isPresent());
+
+        UserDetails actual = actualOpt.get();
+        Assert.assertEquals(actual.getUsername(), "updated_username");
+
     }
 
     @Test
