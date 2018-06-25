@@ -99,6 +99,19 @@ public class AerospikeRepositoryImpl implements AerospikeRepository {
     }
 
     @Override
+    public void deleteByIds(Class clazz, Set ids) {
+        IAerospikeClient client = connection.openSession();
+        WritePolicy wPolicy = new WritePolicy();
+        try {
+            ids.stream()
+                    .map(id -> createKey(clazz, String.valueOf(id)))
+                    .forEach(key -> client.delete(wPolicy, (Key) key));
+        } catch (AerospikeRepositoryException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public Object updateOrCreate(Object entity, String id) {
         Object obj = fetch(entity.getClass(), id);
         if (obj == null) {
@@ -116,7 +129,7 @@ public class AerospikeRepositoryImpl implements AerospikeRepository {
         return list.iterator().next();
     }
 
-    //@Override
+
     public <T> List<T> fetchAll(Collection<String> ids, Class<T> clazz) {
         if (ids == null || ids.isEmpty()) {
             throw new IllegalArgumentException("ids can not be blank!");

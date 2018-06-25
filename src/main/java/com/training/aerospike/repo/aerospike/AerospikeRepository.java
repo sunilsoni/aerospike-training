@@ -14,5 +14,7 @@ public interface AerospikeRepository<T> {
 
     void deleteByIds(String setName, Set<String> ids);
 
+    void deleteByIds(Class<T> clazz, Set<String> ids);
+
     boolean exists(Class<T> clazz, String id);
 }

@@ -8,7 +8,9 @@ import com.training.aerospike.repo.aerospike.AerospikeRepository;
 import com.training.aerospike.repo.aerospike.AerospikeRepositorySystemException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 public class UserRepositoryImpl implements UserRepository {
@@ -27,7 +29,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void delete(String id) {
-        //  aerospikeRepository.d
+        Set<String> set = new HashSet<>();
+        set.add(id);
+        aerospikeRepository.deleteByIds(UserDetails.class, set);
     }
 
     @Override
@@ -48,7 +52,7 @@ public class UserRepositoryImpl implements UserRepository {
         Optional<UserDetails> result;
         try {
             Object obj = aerospikeRepository.fetch(UserDetails.class, id);
-            result = Optional.of((UserDetails) obj);
+            result = Optional.ofNullable((UserDetails) obj);
         } catch (AerospikeRepositorySystemException e) {
             return Optional.empty();
         }

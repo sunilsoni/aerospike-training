@@ -43,12 +43,21 @@ public class UserRepositoryImplTest {
     }
 
     @Test
-    public void updateUserDetails() {
+    public void deleteTest() {
+        //save user entity
+        UserDetails expectedUserDetails = FixtureBuilder.buildUserDetails();
+        repository.save(expectedUserDetails);
 
+        //delete entity
+        repository.delete(expectedUserDetails.getId());
+
+        //check if deleted or not
+        Optional<UserDetails> userDetails = repository.findById(expectedUserDetails.getId());
+        Assert.assertFalse(userDetails.isPresent());
     }
 
     @Test
-    public void save() {
+    public void saveTest() {
         UserDetails expectedUserDetails = FixtureBuilder.buildUserDetails();
         Optional<UserDetails> actual = repository.save(expectedUserDetails);
         Assert.assertTrue(actual.isPresent());
@@ -60,7 +69,7 @@ public class UserRepositoryImplTest {
     }
 
     @Test
-    public void findById() {
+    public void findByIdTest() {
         UserDetails expectedUserDetails = FixtureBuilder.buildUserDetails();
         Optional<UserDetails> userDetails = repository.save(expectedUserDetails);
         Assert.assertTrue(userDetails.isPresent());
