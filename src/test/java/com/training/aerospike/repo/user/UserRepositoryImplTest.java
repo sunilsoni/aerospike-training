@@ -65,7 +65,7 @@ public class UserRepositoryImplTest {
     }
 
     @Test
-    public void updateUserDetails() {
+    public void updateUserDetailsTest() {
         //save user entity
         UserDetails userDetails = FixtureBuilder.buildUserDetails();
         repository.save(userDetails);
